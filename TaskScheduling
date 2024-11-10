@@ -1,0 +1,39 @@
+TaskHandle_t Task1;
+TaskHandle_t Task2;
+const int led_l=32;
+const int buz=25;
+void setup(){
+  Serial.begin(115200);
+  pinMode(led_l,OUTPUT);
+  pinMode(buz,OUTPUT);
+  xTaskCreatePinnedToCore(Task1code,"Task1",10000,NULL,1,&Task1,0);
+  delay(500);
+  xTaskCreatePinnedToCore(Task2code,"Task2",10000,NULL,2,&Task2,1);
+  delay(500);
+}
+void Task1code(void * parameter){
+  Serial.print("Task1 is Running on code");
+  Serial.println(xPortGetCoreID());
+  for(;;){
+    digitalWrite(led_l,HIGH);
+    delay(500);
+    digitalWrite(led_l,LOW);
+    delay(500);
+  }
+}
+void Task2code(void* parameter){
+  Serial.print("Task2 is running on core");
+  Serial.println(xPortGetCoreID());
+  for(;;){
+    digitalWrite(buz,HIGH);
+    delay(1000);
+    digitalWrite(buz,LOW);
+    delay(1000);
+    
+  }
+}
+
+void loop() {
+  // put your main code here, to run repeatedly:
+
+}
