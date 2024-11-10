@@ -1,0 +1,45 @@
+#define AO_PIN 36 // ESP32's pin GPIO36 connected to AO pin of the ldr module
+int LED1=21;
+void setup()
+{
+// initialize serial communication
+Serial.begin(9600);
+pinMode(LED1,OUTPUT);
+}
+void loop() {
+int val = analogRead(AO_PIN);
+if(val < 40)
+{
+Serial.println(val);
+Serial.println("DARK");
+delay(1000);
+}
+else if(val < 800)
+{
+Serial.println(val);
+Serial.println("DIM");
+delay(1000);
+}
+else if(val < 2000)
+{
+Serial.println(val);
+Serial.println("BRIGHT");
+delay(1000);
+}
+else
+{
+Serial.println(val);
+Serial.println("VERY BRIGHT");
+delay(1000);
+}
+if(val < 800)
+{
+digitalWrite(LED1, LOW);
+
+3
+
+}
+else
+{
+digitalWrite(LED1, HIGH);
+}
