@@ -1,8 +1,7 @@
-#define AO_PIN 36 // ESP32's pin GPIO36 connected to AO pin of the ldr module
+#define AO_PIN 36 
 int LED1=21;
 void setup()
 {
-// initialize serial communication
 Serial.begin(9600);
 pinMode(LED1,OUTPUT);
 }
