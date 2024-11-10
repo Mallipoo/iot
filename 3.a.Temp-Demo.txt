@@ -1,18 +1,11 @@
 ﻿#include <DHT.h>;
+#define DHTPIN 7     
+#define DHTTYPE DHT22   
+DHT dht(DHTPIN, DHTTYPE); 
 
-
-//Constants
-#define DHTPIN 7     // what pin we're connected to
-#define DHTTYPE DHT22   // DHT 22  (AM2302)
-DHT dht(DHTPIN, DHTTYPE); //// Initialize DHT sensor for normal 16mhz Arduino
-
-
-
-
-//Variables
 int chk;
-float hum;  //Stores humidity value
-float tempc; //Stores temperature value
+float hum;  
+float tempc; 
 float tempf;
 void setup()
 {
@@ -20,16 +13,12 @@ void setup()
   dht.begin();
 }
 
-
 void loop()
 {
     delay(2000);
-    //Read data and store it to variables hum and temp
     hum = dht.readHumidity();
     tempc= dht.readTemperature();
-        // Read temperature as Fahrenheit (isFahrenheit = true)
-        tempf = dht.readTemperature(true);
-    //Print temp and humidity values to serial monitor
+    tempf = dht.readTemperature(true);
     Serial.print("Humidity: ");
     Serial.print(hum);
     Serial.print(" %, \t Tempc: ");
@@ -37,7 +26,5 @@ void loop()
     Serial.print(" Celsius,\t Tempf:  ");
     Serial.print(tempc);
     Serial.print("Farenheit");
-
-
     delay(10000); //Delay 2 sec.
 }
