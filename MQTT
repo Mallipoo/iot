@@ -33,7 +33,6 @@ void reconnect() {
       
       if (mqttClient.connect(clientId.c_str())) {
         Serial.println("Connected.");
-        // subscribe to topic
         mqttClient.subscribe("esp32/temperature");
       }      
   }
@@ -67,9 +66,8 @@ void loop() {
   if (now - previous_time > 1000) {
     previous_time = now;
     float humidity = dht.readHumidity();
-  float temp = dht.readTemperature();// Read temperature as Celsius (the default)
-  
-  // Check if any reads failed and exit early (to try again).
+  float temp = dht.readTemperature();
+ 
   if (isnan(humidity) || isnan(temp)) {
     Serial.println(F("Failed to read from DHT sensor!"));
     return;
