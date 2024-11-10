@@ -1,0 +1,97 @@
+#include <Arduino.h>
+#include <WiFi.h>
+#include <PubSubClient.h>
+//#include <Adafruit_BME280.h>
+//#include <Adafruit_Sensor.h>
+#include "DHT.h" 
+#define DHTPIN 4  
+#define DHTTYPE DHT11   // DHT 11
+
+WiFiClient wifiClient;
+PubSubClient mqttClient(wifiClient); 
+//Adafruit_BME280 bme;
+DHT dht(DHTPIN, DHTTYPE);
+ 
+
+const char* ssid = "xxxx";
+const char* password = "xxxx";
+
+char *mqttServer = "broker.hivemq.com";
+int mqttPort = 1883;
+
+void setupMQTT() {
+  mqttClient.setServer(mqttServer, mqttPort);
+  mqttClient.setCallback(callback);
+}
+
+void reconnect() {
+  Serial.println("Connecting to MQTT Broker...");
+  while (!mqttClient.connected()) {
+      Serial.println("Reconnecting to MQTT Broker..");
+      String clientId = "ESP32Client-";
+      clientId += String(random(0xffff), HEX);
+      
+      if (mqttClient.connect(clientId.c_str())) {
+        Serial.println("Connected.");
+        // subscribe to topic
+        mqttClient.subscribe("esp32/temperature");
+      }      
+  }
+}
+
+void setup() {
+  Serial.begin(115200);
+  dht.begin();
+  WiFi.begin(ssid, password);
+    while (WiFi.status() != WL_CONNECTED) {
+      delay(500);
+      Serial.print(".");
+    } 
+    Serial.println("");
+     Serial.println("Connected to Wi-Fi");
+/*
+  if (!bme.begin(0x76)) {
+    Serial.println("Check BME280 connections!");
+  }*/
+  setupMQTT();
+}
+
+
+void loop() {
+  if (!mqttClient.connected())
+    reconnect();
+  mqttClient.loop();
+  long now = millis();
+  long previous_time = 0;
+  
+  if (now - previous_time > 1000) {
+    previous_time = now;
+    float humidity = dht.readHumidity();
+  float temp = dht.readTemperature();// Read temperature as Celsius (the default)
+  
+  // Check if any reads failed and exit early (to try again).
+  if (isnan(humidity) || isnan(temp)) {
+    Serial.println(F("Failed to read from DHT sensor!"));
+    return;
+  }
+  char tempString[8];
+  char humString[8];
+  dtostrf(temp, 1, 2, tempString);
+  //Serial.println("humidity val");
+  //Serial.println(tempString);
+    mqttClient.publish("esp32/temperature",tempString);
+  dtostrf(humidity, 1, 2, humString);
+  //Serial.println("humidity val");
+  //Serial.println(humString);
+    mqttClient.publish("esp32/temhumidity", humiHi);
+
+    
+  }
+}
+  void callback(char* topic, byte* message, unsigned int length) {
+  Serial.println("Callback - ");
+  Serial.println("Message:");
+  for (int i = 0; i < length; i++) {
+    Serial.print((char)message[i]);
+  }
+}
