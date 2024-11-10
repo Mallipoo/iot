@@ -1,9 +1,7 @@
-#define DO_PIN 13 // ESP32's pin GPIO13 connected to DO pin of the ldr module
+#define DO_PIN 13
 void setup()
 {
-// initialize serial communication
 Serial.begin(9600);
-// initialize the ESP32's pin as an input
 pinMode(DO_PIN, INPUT);
 pinMode(21,OUTPUT);
 }
