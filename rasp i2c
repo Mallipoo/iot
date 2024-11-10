@@ -37,3 +37,5 @@ delay(100);
 GND  20    GND
 SDA   3    A4
 SCL   5    A5
+
+sudo i2cdetect -y 1
