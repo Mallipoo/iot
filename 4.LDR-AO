@@ -36,8 +36,6 @@ if(val < 800)
 {
 digitalWrite(LED1, LOW);
 
-3
-
 }
 else
 {
