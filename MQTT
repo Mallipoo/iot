@@ -13,8 +13,8 @@ PubSubClient mqttClient(wifiClient);
 DHT dht(DHTPIN, DHTTYPE);
  
 
-const char* ssid = "xxxx";
-const char* password = "xxxx";
+const char* ssid = "  ";
+const char* password = " ";
 
 char *mqttServer = "broker.hivemq.com";
 int mqttPort = 1883;
