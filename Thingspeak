@@ -20,7 +20,6 @@ unsigned long timerDelay=30000;
 float tempC,humid;
 
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
   dht.begin();
   WiFi.mode(WIFI_STA);
@@ -29,7 +28,6 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   if((millis() - lastTime) > timerDelay)
   {
     if(WiFi.status() != WL_CONNECTED)
